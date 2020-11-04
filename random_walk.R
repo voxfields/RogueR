@@ -34,10 +34,10 @@ random_walk <- function(steps, diagonal = FALSE, runs = 0, reach = 10){
     trail$tag <- sample(1:round(steps/reach), steps, replace = TRUE)
     trail <- trail[order(tag)]
     for (i in 1:runs){
-      trail[tag %in% sample(1:round(steps/reach),1)] <- moves[sample(.N, 1)]
+      trail[tag %in% sample(1:round(steps/reach), 1)] <- moves[sample(.N, 1)]
     }
   }
-  trail[,tag := NULL]
+  trail[, tag := NULL]
   trail[, x:=cumsum(x)][, y:=cumsum(y)]
 }
 
