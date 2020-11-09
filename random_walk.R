@@ -8,7 +8,7 @@
 #' of identical steps.
 #' 
 #' @param steps the number of steps in walk.
-#' @param diagonal logical: should the walk include 8-way movement?
+#' @param intercardinal logical: should the walk include 8-way movement?
 #' @param bias the (x, y) bias between 0 (no bias) and 1 (one-dimensional walk).
 #' @param runs the number of contiguous runs to include in the walk.
 #' @param reach the number of steps in each contiguous run.
@@ -16,7 +16,7 @@
 #' @example
 #' 
 #' # One-dimensional random walk
-#' rwr <- random_walk(200, diagonal = FALSE, bias = c(1, 0))
+#' rwr <- random_walk(200, intercardinal = FALSE, bias = c(1, 0))
 #' plot(rwr, pch = 16, cex = 0.5, asp = 1)
 #' lines(rwr, col = "grey", lwd = 0.5)
 #' 
@@ -26,7 +26,7 @@
 #' lines(rw, col = "grey", lwd = 0.5)
 #' 
 #' # Two-dimensional random walk with 8-way movement
-#' rwr <- random_walk(3000, diagonal = FALSE)
+#' rwr <- random_walk(3000, intercardinal = FALSE)
 #' plot(rwr, pch = 16, cex = 0.5, asp = 1)
 #' lines(rwr, col = "grey", lwd = 0.5)
 #' 
@@ -35,13 +35,10 @@
 #' plot(rwr, pch = 16, cex = 0.5, asp = 1)
 #' lines(rwr, col = "grey", lwd = 0.5)
 
-random_walk <- function(steps,
-                        diagonal = FALSE, 
-                        bias = c(0, 0), 
-                        runs = 0, 
-                        reach = 10) {
+random_walk <- function(steps, bias = c(0, 0), intercardinal = FALSE, 
+                        runs = 0, reach = 10) {
   moves <- data.table(expand.grid(x = -1:1, y = -1:1, tag = NA))
-  if (diagonal == FALSE) {
+  if (intercardinal == FALSE) {
     moves <- moves[(abs(x) + abs(y)) < 2]
   }
   trail <- moves[sample(.N, steps, replace = TRUE)]
@@ -57,5 +54,3 @@ random_walk <- function(steps,
   trail[, tag := NULL]
   trail[, x := cumsum(x)][, y := cumsum(y)]
 }
-
-
